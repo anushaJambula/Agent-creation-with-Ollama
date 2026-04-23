@@ -1,0 +1,42 @@
+import os
+from IPython.display import Markdown
+from dotenv import load_dotenv
+from openai import OpenAI
+
+# get api key from .env file
+getapi_key= os.getenv('ollama_openai_api_key')
+
+if getapi_key:
+    print(f"api key found {getapi_key}")
+else:
+    print("api key not found")
+
+load_dotenv(override=True)
+
+# invoke ollama app
+ollama_baseurl = "http://localhost:11434/v1"
+
+ollama = OpenAI(
+       base_url=ollama_baseurl,
+       api_key=getapi_key
+)
+
+response = ollama.chat.completions.create(model="llama3.2", messages=[{"role":"user", "content":"Pick business area that might be worth exploring for an agentic ai oppurtunity"}],)  
+
+business_idea = response.choices[0].message.content
+display(Markdown(business_idea))
+
+#print(response.choices[0].message.content)
+response = ollama.chat.completions.create(model="llama3.2", messages=[{"role":"user", "content":f"paint point in {business_idea} industry, that would be ripe for an agentic solution."}],)  
+painpoint = response.choices[0].message.content
+
+display(Markdown(painpoint))
+response = ollama.chat.completions.create(model="llama3.2", messages=[{"role":"user", "content":f"suggest agentic ai solution for  {painpoint}"}],)  
+
+solution = response.choices[0].message.content
+
+display(Markdown(solution))
+
+print(solution)
+
+
