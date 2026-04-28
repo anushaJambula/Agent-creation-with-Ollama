@@ -1,0 +1,23 @@
+## Used OpenAI Agents SDK to build basic Agent which works a QA Interviewe agent.
+##User can ask important questions asked in interview and agent will reply with detailed information
+
+
+from typing import override
+from dotenv import load_dotenv
+from agents import Agent,Runner
+from openai import Client, OpenAI
+import os
+
+load_dotenv(override = True)
+os.environ["OPENAI_API_KEY"] = "testing"
+os.environ["OPENAI_BASE_URL"] = "http://localhost:11434/v1"
+
+
+
+
+agent = Agent(name = "QA specialist",instructions= "Your are a QA Interview specialst ", model = "llama3.2")
+
+
+result = await Runner.run(agent,"Tell me one important question asked in interviews")
+
+print(result.final_output)
